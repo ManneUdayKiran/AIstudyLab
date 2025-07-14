@@ -1,0 +1,4 @@
+MONGO_URI=your_mongouri
+GROQ_API_KEY=ur_api_key
+JWT_SECRET=s2^LKd30@#kdZ20jjI9
+PORT="3000"

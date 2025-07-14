@@ -1,0 +1,40 @@
+.login-container{
+  width: 20vw;
+  min-width: 260px;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
+}
+
+@media (max-width: 600px) {
+  .login-container {
+    width: 90vw;
+    min-width: unset;
+    margin-top: 60px;
+    padding: 16px;
+  }
+}
+.register-container{
+  width: 20vw;
+  min-width: 260px;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
+}
+
+@media (max-width: 600px) {
+  .register-container {
+    width: 90vw;
+    min-width: unset;
+    margin-top: 60px;
+    padding: 16px;
+  }
+}
