@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://aistudylab.onrender.com/api';
+const API_BASE_URL = 'https://a-istudy-lab-of1b.vercel.app/api';
 
 // Function to refresh token
 const refreshToken = async () => {
