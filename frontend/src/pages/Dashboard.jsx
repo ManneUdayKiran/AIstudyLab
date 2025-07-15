@@ -3,7 +3,7 @@ import { Card, Progress, message } from 'antd';
 import AnalyticsChart from '../components/AnalyticsChart';
 import SmartProgressTracker from '../components/SmartProgressTracker';
 import OnboardingModal from '../components/OnboardingModal';
-import TypingEffect from 'react-typed.ts';
+import { ReactTyped } from 'react-typed';
 import { motion, useInView } from 'framer-motion';
 import StudyRecommendations from '../components/StudyRecommendations';
 import DashboardSidebar from '../components/DashboardSidebar';
@@ -13,17 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 const TYPING_SPEED = 80;
 
-const SUBJECTS = [
-  'Maths',
-  'Science',
-  'History',
-  'English',
-  'Geography',
-  'Computer',
-  'General Knowledge',
-  'Space',
-  'Coding',
-];
+
 
 // Add helper for time ago
 function timeAgo(date) {
@@ -200,7 +190,9 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
         <div style={{ marginTop: 64, marginBottom: 24, textAlign: 'center' }}>
           <h1 style={{ fontSize: 44, fontWeight: 700, color: '#fff', letterSpacing: 1, margin: 0 }}>
             Welcome to <span>
-              <TypingEffect
+            <div>
+
+              <ReactTyped
                 strings={["AIStudyLab"]}
                 typeSpeed={120}
                 backSpeed={60}
@@ -208,6 +200,7 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
                 showCursor={true}
                 cursorChar="|"
               />
+            </div>
             </span>
           </h1>
         </div>
