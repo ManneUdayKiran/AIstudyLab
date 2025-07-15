@@ -5,7 +5,7 @@ const axios = require('axios');
 
 const CSV_PATH = path.join(__dirname, 'train.csv', 'train.csv');
 const TEMP_JSON_PATH = path.join(__dirname, 'science_questions_temp.json');
-const IMPORT_ENDPOINT = 'https://a-istudy-lab.vercel.app/api/data/import-json';
+const IMPORT_ENDPOINT = 'https://aistudylab.onrender.com/api/data/import-json';
 
 async function preprocessAndImport() {
   const questions = [];

@@ -19,7 +19,7 @@ const progressRouter = require('./routes/progress');
 var app = express();
 
 app.use(cors({
-  origin: ['https://a-istudy-lab.vercel.app','http://localhost:5173'],
+  origin: ['https://aistudylab.onrender.com','*'],
   credentials: true // if you use cookies/auth
 }));
 

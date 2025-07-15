@@ -23,7 +23,7 @@ const ChatAssistant = () => {
     const fetchHistory = async () => {
       setHistoryLoading(true);
       try {
-        const res = await fetch(`https://a-istudy-lab.vercel.app/api/chat/history?email=${encodeURIComponent(user.email)}`);
+        const res = await fetch(`https://aistudylab.onrender.com/api/chat/history?email=${encodeURIComponent(user.email)}`);
         const data = await res.json();
         setMessages(data.messages || []);
       } catch {
@@ -54,7 +54,7 @@ const ChatAssistant = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('https://a-istudy-lab.vercel.app/api/chat', {
+      const res = await fetch('https://aistudylab.onrender.com/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMessage, email: user.email })
@@ -83,7 +83,7 @@ const ChatAssistant = () => {
     setLoading(true);
     setError(null);
     try {
-      await fetch('https://a-istudy-lab.vercel.app/api/chat/clear', {
+      await fetch('https://aistudylab.onrender.com/api/chat/clear', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: user.email })

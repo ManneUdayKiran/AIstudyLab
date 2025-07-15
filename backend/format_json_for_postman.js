@@ -14,10 +14,3 @@ const postmanFormat = {
 
 // Write the formatted JSON
 fs.writeFileSync('./computer_science_qa_postman.json', JSON.stringify(postmanFormat, null, 2));
-
-console.log('✅ Formatted JSON created for Postman!');
-console.log('📁 File: computer_science_qa_postman.json');
-console.log('📊 Questions: ' + originalData.length);
-console.log('');
-console.log('📋 Copy the content of computer_science_qa_postman.json to Postman body');
-console.log('🔗 Endpoint: POST https://a-istudy-lab.vercel.app/api/data/questions/json'); 

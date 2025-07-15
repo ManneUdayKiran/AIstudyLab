@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://aistudylab.onrender.com/api';
 
 // Function to refresh token
 const refreshToken = async () => {
