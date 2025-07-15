@@ -19,7 +19,7 @@ const progressRouter = require('./routes/progress');
 var app = express();
 
 app.use(cors({
-  origin: 'https://a-istudy-lab.vercel.app', // or '*' for all origins (not recommended for production)
+  origin: ['https://a-istudy-lab.vercel.app','http://localhost:5173'], // or '*' for all origins (not recommended for production)
   credentials: true // if you use cookies/auth
 }));
 
