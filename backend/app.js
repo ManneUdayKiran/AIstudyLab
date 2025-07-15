@@ -19,7 +19,7 @@ const progressRouter = require('./routes/progress');
 var app = express();
 
 app.use(cors({
-  origin: ['aistudylab-1.onrender.com','https://aistudylab.onrender.com'],
+  origin: ['https://aistudylab-1.onrender.com','https://aistudylab.onrender.com'],
   credentials: true // if you use cookies/auth
 }));
 
