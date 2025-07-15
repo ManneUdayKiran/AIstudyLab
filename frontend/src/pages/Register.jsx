@@ -31,15 +31,15 @@ const Register = ({ onRegister }) => {
 
   return (
     <div className="register-container">
-      <h2>Register</h2>
+      <h2 style={{color:'white'}}>Register</h2>
       <Form onFinish={onFinish} layout="vertical">
-        <Form.Item name="name" label="Name" rules={[{ required: true }]}> 
+        <Form.Item name="name" label={<span style={{ color: 'white' }}>Name</span>} rules={[{ required: true }]}> 
           <Input placeholder="Name" />
         </Form.Item>
-        <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}> 
+        <Form.Item name="email" label={<span style={{ color: 'white' }}>Email</span>} rules={[{ required: true, type: 'email' }]}> 
           <Input placeholder="Email" />
         </Form.Item>
-        <Form.Item name="password" label="Password" rules={[{ required: true, min: 6 }]}> 
+        <Form.Item name="password" label={<span style={{ color: 'white' }}>Password</span>} rules={[{ required: true, min: 6 }]}> 
           <Input.Password placeholder="Password (min 6 chars)" />
         </Form.Item>
         <Form.Item>

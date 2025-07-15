@@ -25,6 +25,18 @@ const SUBJECTS = [
   'Coding',
 ];
 
+// Add helper for time ago
+function timeAgo(date) {
+  const now = new Date();
+  const then = new Date(date);
+  const diff = Math.floor((now - then) / 1000); // seconds
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
+  if (diff < 604800) return `${Math.floor(diff / 86400)} days ago`;
+  return then.toLocaleDateString();
+}
+
 const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
   const [typedName, setTypedName] = useState('');
   const [showCursor, setShowCursor] = useState(true);
@@ -252,6 +264,87 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
     );
   }
 
+  // Build dynamic Recent Activity
+  let recentActivity = [];
+  if (weeklyProgress && weeklyProgress.length > 0) {
+    weeklyProgress.forEach(day => {
+      const dateStr = day.date;
+      // Completed quiz
+      if (day.quizzesCompleted > 0) {
+        (day.subjectsStudied || []).forEach(subject => {
+          recentActivity.push({
+            action: 'Completed',
+            subject: `${subject} Quiz`,
+            time: timeAgo(dateStr),
+            score: day.progress ? `${day.progress}%` : null,
+            date: dateStr
+          });
+        });
+      }
+      // Studied subject (but not completed quiz)
+      else if (day.progress > 0 && day.studyTime > 0) {
+        (day.subjectsStudied || []).forEach(subject => {
+          recentActivity.push({
+            action: 'Studied',
+            subject: subject,
+            time: timeAgo(dateStr),
+            score: null,
+            date: dateStr
+          });
+        });
+      }
+      // Started subject (no progress yet)
+      else if (day.subjectsStudied && day.subjectsStudied.length > 0) {
+        (day.subjectsStudied || []).forEach(subject => {
+          recentActivity.push({
+            action: 'Started',
+            subject: subject,
+            time: timeAgo(dateStr),
+            score: null,
+            date: dateStr
+          });
+        });
+      }
+    });
+    // Sort by date descending
+    recentActivity.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Only show most recent 5
+    recentActivity = recentActivity.slice(0, 5);
+  }
+
+  // Build dynamic Study Recommendations
+  let allSubjects = weeklyProgress.reduce((acc, day) => {
+    (day.subjectsStudied || []).forEach(subj => acc.add(subj));
+    return acc;
+  }, new Set());
+  // Count study frequency for each subject
+  let subjectCounts = {};
+  weeklyProgress.forEach(day => {
+    (day.subjectsStudied || []).forEach(subj => {
+      subjectCounts[subj] = (subjectCounts[subj] || 0) + 1;
+    });
+  });
+  // Find subjects with least frequency (or not studied at all)
+  let allPossibleSubjects = Array.from(allSubjects);
+  // If user has not studied anything, fallback to demo subjects
+  if (allPossibleSubjects.length === 0) {
+    allPossibleSubjects = ['Maths', 'Science', 'History', 'English', 'Geography', 'Computer Science'];
+  }
+  let recommendations = allPossibleSubjects
+    .sort((a, b) => (subjectCounts[a] || 0) - (subjectCounts[b] || 0))
+    .slice(0, 3)
+    .map((subject, idx) => {
+      let count = subjectCounts[subject] || 0;
+      let priority = count === 0 ? 'High' : count === 1 ? 'Medium' : 'Low';
+      let desc = count === 0 ? `You haven't studied ${subject} yet this week.` : `Revise ${subject} for better retention.`;
+      return {
+        title: `Study ${subject}`,
+        desc,
+        priority,
+        time: '30 min'
+      };
+    });
+
   return (
     <div
       style={{
@@ -284,22 +377,22 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
 
         {/* Quick Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 24 }}>
-          <Card bordered={false} style={{ textAlign: 'center', background: 'linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%)', color: 'white' }}>
+          <Card bordered={false} style={{ textAlign: 'center', background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', color: 'white', boxShadow: '0 2px 12px #0001' }}>
             <div style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>📚</div>
             <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Subjects Studied</div>
             <div style={{ fontSize: 24, fontWeight: 700 }}>{progressSummary.subjectsStudied}</div>
           </Card>
-          <Card bordered={false} style={{ textAlign: 'center', background: 'linear-gradient(135deg, #81c784 0%, #66bb6a 100%)', color: 'white' }}>
+          <Card bordered={false} style={{ textAlign: 'center', background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', color: 'white', boxShadow: '0 2px 12px #0001' }}>
             <div style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>🎯</div>
             <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Quizzes Completed</div>
             <div style={{ fontSize: 24, fontWeight: 700 }}>{progressSummary.totalQuizzes}</div>
           </Card>
-          <Card bordered={false} style={{ textAlign: 'center', background: 'linear-gradient(135deg, #ffd54f 0%, #ffca28 100%)', color: 'white' }}>
+          <Card bordered={false} style={{ textAlign: 'center', background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', color: 'white', boxShadow: '0 2px 12px #0001' }}>
             <div style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>⏱️</div>
             <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Study Time</div>
             <div style={{ fontSize: 24, fontWeight: 700 }}>{Math.round(progressSummary.totalStudyTime / 60)}h</div>
           </Card>
-          <Card bordered={false} style={{ textAlign: 'center', background: 'linear-gradient(135deg, #ff8a65 0%, #ff7043 100%)', color: 'white' }}>
+          <Card bordered={false} style={{ textAlign: 'center', background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', color: 'white', boxShadow: '0 2px 12px #0001' }}>
             <div style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>🏆</div>
             <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Average Score</div>
             <div style={{ fontSize: 24, fontWeight: 700 }}>{progressSummary.averageScore}%</div>
@@ -610,22 +703,19 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
         {/* Recent Activity & Recommendations */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
           {/* Recent Activity */}
-          <Card bordered={false} style={{ background: '#fafafa' }}>
+          <Card bordered={false} style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', color: 'white', boxShadow: '0 2px 12px #0001' }}>
             <h3 style={{ margin: '0 0 16px 0', fontSize: 18, fontWeight: 600 }}>🕒 Recent Activity</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {[
-                { action: 'Completed', subject: 'Math Quiz', time: '2 hours ago', score: '85%' },
-                { action: 'Started', subject: 'Science Module', time: '4 hours ago', score: null },
-                { action: 'Reviewed', subject: 'History Notes', time: '1 day ago', score: null },
-                { action: 'Achieved', subject: 'Perfect Score', time: '2 days ago', score: '100%' }
-              ].map((activity, index) => (
+              {recentActivity.length === 0 ? (
+                <div style={{ color: '#eee', padding: 12 }}>No recent activity yet.</div>
+              ) : recentActivity.map((activity, index) => (
                 <div key={index} style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
                   padding: '12px', 
-                  background: 'white', 
+                  background: 'rgba(255,255,255,0.13)', 
                   borderRadius: 8,
-                  border: '1px solid #f0f0f0'
+                  border: '1px solid rgba(255,255,255,0.13)'
                 }}>
                   <div style={{ 
                     width: 8, 
@@ -638,13 +728,13 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
                     <div style={{ fontSize: 14, fontWeight: 500 }}>
                       {activity.action} <span style={{ color: '#4fc3f7' }}>{activity.subject}</span>
                     </div>
-                    <div style={{ fontSize: 12, color: '#666' }}>{activity.time}</div>
+                    <div style={{ fontSize: 12, color: '#eee' }}>{activity.time}</div>
                   </div>
                   {activity.score && (
                     <div style={{ 
                       padding: '4px 8px', 
-                      background: '#e8f5e9', 
-                      color: '#2e7d32', 
+                      background: 'rgba(129,199,132,0.15)', 
+                      color: '#b7eb8f', 
                       borderRadius: 4,
                       fontSize: 12,
                       fontWeight: 600
@@ -658,41 +748,24 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
           </Card>
 
           {/* Study Recommendations */}
-          <Card bordered={false} style={{ background: '#fafafa' }}>
+          <Card bordered={false} style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', color: 'white', boxShadow: '0 2px 12px #0001' }}>
             <h3 style={{ margin: '0 0 16px 0', fontSize: 18, fontWeight: 600 }}>💡 Study Recommendations</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {[
-                { 
-                  title: 'Practice Math Problems', 
-                  desc: 'Focus on algebra and geometry concepts',
-                  priority: 'High',
-                  time: '30 min'
-                },
-                { 
-                  title: 'Review Science Notes', 
-                  desc: 'Chemistry chapter 5 needs attention',
-                  priority: 'Medium',
-                  time: '45 min'
-                },
-                { 
-                  title: 'History Quiz Prep', 
-                  desc: 'World War II topics coming up',
-                  priority: 'Low',
-                  time: '20 min'
-                }
-              ].map((rec, index) => (
+              {recommendations.length === 0 ? (
+                <div style={{ color: '#eee', padding: 12 }}>No recommendations yet.</div>
+              ) : recommendations.map((rec, index) => (
                 <div key={index} style={{ 
                   padding: '12px', 
-                  background: 'white', 
+                  background: 'rgba(255,255,255,0.13)', 
                   borderRadius: 8,
-                  border: '1px solid #f0f0f0'
+                  border: '1px solid rgba(255,255,255,0.13)'
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
                     <div style={{ fontSize: 14, fontWeight: 500 }}>{rec.title}</div>
                     <div style={{ 
                       padding: '2px 6px', 
-                      background: rec.priority === 'High' ? '#ffebee' : rec.priority === 'Medium' ? '#fff3e0' : '#e8f5e9',
-                      color: rec.priority === 'High' ? '#d32f2f' : rec.priority === 'Medium' ? '#f57c00' : '#2e7d32',
+                      background: rec.priority === 'High' ? 'rgba(255,71,87,0.15)' : rec.priority === 'Medium' ? 'rgba(255,193,7,0.15)' : 'rgba(76,175,80,0.15)',
+                      color: rec.priority === 'High' ? '#ff6b81' : rec.priority === 'Medium' ? '#ffd600' : '#b7eb8f',
                       borderRadius: 4,
                       fontSize: 10,
                       fontWeight: 600
@@ -700,58 +773,18 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
                       {rec.priority}
                     </div>
                   </div>
-                  <div style={{ fontSize: 12, color: '#666', marginBottom: 4 }}>{rec.desc}</div>
-                  <div style={{ fontSize: 11, color: '#999' }}>⏱️ {rec.time}</div>
+                  <div style={{ fontSize: 12, color: '#eee', marginBottom: 4 }}>{rec.desc}</div>
+                  <div style={{ fontSize: 11, color: '#eee' }}>⏱️ {rec.time}</div>
                 </div>
               ))}
             </div>
           </Card>
         </div>
 
-        {/* Quick Actions */}
-        {/* <Card bordered={false} style={{ marginTop: 24 }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: 18, fontWeight: 600 }}>⚡ Quick Actions</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12 }}>
-            {[
-              { icon: '📝', title: 'Start Quiz', desc: 'Take a quick quiz' },
-              { icon: '📚', title: 'Study Mode', desc: 'Review materials' },
-              { icon: '💬', title: 'Ask AI', desc: 'Get help instantly' },
-              { icon: '📊', title: 'View Progress', desc: 'Check analytics' }
-            ].map((action, index) => (
-              <button
-                key={index}
-                style={{
-                  padding: '16px',
-                  background: 'white',
-                  border: '1px solid #f0f0f0',
-                  borderRadius: 8,
-                  cursor: 'pointer',
-                  textAlign: 'center',
-                  transition: 'all 0.2s',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: 8
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                <div style={{ fontSize: 24 }}>{action.icon}</div>
-                <div style={{ fontSize: 14, fontWeight: 600 }}>{action.title}</div>
-                <div style={{ fontSize: 12, color: '#666' }}>{action.desc}</div>
-              </button>
-            ))}
-          </div>
-        </Card> */}
+       
       </div>
 
-      <DashboardSidebar onWeeklyPlanClick={handleWeeklyPlanClick} />
+      <DashboardSidebar onWeeklyPlanClick={handleWeeklyPlanClick} weeklyProgress={weeklyProgress} progressSummary={progressSummary} />
 
       <OnboardingModal
         visible={showOnboarding}

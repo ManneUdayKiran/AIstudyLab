@@ -89,10 +89,7 @@ function App() {
       const token = localStorage.getItem('token');
       const storedUser = localStorage.getItem('user');
       
-      console.log('Frontend - Token:', token);
-      console.log('Frontend - Stored user:', storedUser);
-      console.log('Frontend - Current user state:', user);
-      console.log('Frontend - Profile data to send:', profileData);
+      
       
       // Decode the token to see its structure
       if (token) {
@@ -116,8 +113,7 @@ function App() {
         body: JSON.stringify(profileData)
       });
 
-      console.log('Frontend - Response status:', response.status);
-      console.log('Frontend - Response ok:', response.ok);
+    
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -171,7 +167,9 @@ function App() {
       >
         <div style={{ display: 'flex', alignItems: 'center', marginRight: 32 }}>
           <img src={logo} alt="Logo" style={{ height: 40, marginRight: 12 }} />
-          <span style={{ color: '#fff', fontWeight: 700, fontSize: 22, letterSpacing: 1 }}>AIStudyLab</span>
+          <span style={{ color: '', fontWeight: 700, fontSize: 22, letterSpacing: 1 }}> 
+            <Link to='/dashboard'><span style={{color:'white'}}>AIStudyLab</span></Link>
+          </span>
         </div>
         <div style={{ display: 'flex', flex: 1, minWidth: 0, alignItems: 'center' }}>
           <Menu

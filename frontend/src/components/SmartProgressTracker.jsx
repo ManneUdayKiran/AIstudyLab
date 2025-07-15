@@ -158,8 +158,8 @@ const SmartProgressTracker = () => {
   }
 
   return (
-    <div style={{ marginBottom: 24 }}>
-      <Row gutter={[24, 24]}>
+    <div style={{ background: 'transparent', backdropFilter: 'blur(12px)', color: 'white', boxShadow: '0 2px 12px #0001', borderRadius: 16, padding: 24 }}>
+      <Row  gutter={[24, 24]}>
         <Col xs={24} lg={16}>
           <Card 
             title={
@@ -179,32 +179,32 @@ const SmartProgressTracker = () => {
             style={{ height: '100%' }}
           >
             {subjects.length > 0 ? (
-              <Space direction="vertical" style={{ width: '100%' }} size="large">
-                {subjects.map((subject, index) => (
-                  <div key={index}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                      <Space>
-                        <BookOutlined style={{ color: subject.color }} />
-                        <Text strong>{subject.name}</Text>
-                        <Tag color={getDifficultyColor(subject.difficulty)}>
-                          {getDifficultyIcon(subject.difficulty)} {subject.difficulty}
-                        </Tag>
-                      </Space>
+            <Space direction="vertical" style={{ width: '100%' }} size="large">
+              {subjects.map((subject, index) => (
+                <div key={index}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <Space>
+                      <BookOutlined style={{ color: subject.color }} />
+                      <Text strong>{subject.name}</Text>
+                      <Tag color={getDifficultyColor(subject.difficulty)}>
+                        {getDifficultyIcon(subject.difficulty)} {subject.difficulty}
+                      </Tag>
+                    </Space>
                       <div style={{ textAlign: 'right' }}>
                         <Text type="secondary">
                           {subject.correctAnswers}/{subject.totalQuestions} correct
                         </Text>
                       </div>
-                    </div>
-                    <Progress 
-                      percent={subject.progress} 
-                      strokeColor={subject.color}
-                      format={(percent) => `${percent}%`}
-                      size="small"
-                    />
                   </div>
-                ))}
-              </Space>
+                  <Progress 
+                    percent={subject.progress} 
+                    strokeColor={subject.color}
+                      format={(percent) => `${percent}%`}
+                    size="small"
+                  />
+                </div>
+              ))}
+            </Space>
             ) : (
               <div style={{ textAlign: 'center', padding: '40px' }}>
                 <BookOutlined style={{ fontSize: '48px', color: '#d9d9d9', marginBottom: '16px' }} />
@@ -218,28 +218,28 @@ const SmartProgressTracker = () => {
         <Col xs={24} lg={8}>
           <Card title="🎯 Study Suggestions" style={{ height: '100%' }}>
             {suggestedTopics.length > 0 ? (
-              <List
-                size="small"
-                dataSource={suggestedTopics}
+            <List
+              size="small"
+              dataSource={suggestedTopics}
                 renderItem={(item) => (
-                  <List.Item>
-                    <div style={{ width: '100%' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                        <Text strong>{item.subject}</Text>
+                <List.Item>
+                  <div style={{ width: '100%' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                      <Text strong>{item.subject}</Text>
                         <Tag color={item.priority === 'High' ? 'red' : 'orange'} size="small">
                           {item.priority}
                         </Tag>
-                      </div>
+                    </div>
                       <Text type="secondary" style={{ fontSize: '12px' }}>
                         Focus on: {item.topic}
-                      </Text>
+                    </Text>
                       <Text type="secondary" style={{ fontSize: '11px' }}>
                         {item.reason}
                       </Text>
-                    </div>
-                  </List.Item>
-                )}
-              />
+                  </div>
+                </List.Item>
+              )}
+            />
             ) : (
               <div style={{ textAlign: 'center', padding: '20px' }}>
                 <TrophyOutlined style={{ fontSize: '32px', color: '#52c41a', marginBottom: '8px' }} />

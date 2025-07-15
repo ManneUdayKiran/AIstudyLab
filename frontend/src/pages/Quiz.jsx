@@ -222,11 +222,11 @@ const Quiz = ({ isLoggedIn, onShowLoginModal }) => {
     setFeedback(prev => {
       const newFeedback = [...prev];
       newFeedback[current] = {
-        question: questions[current].question,
-        selected: selectedAnswer,
-        correct: correctAnswerText,
-        isCorrect,
-        explanation
+      question: questions[current].question,
+      selected: selectedAnswer,
+      correct: correctAnswerText,
+      isCorrect,
+      explanation
       };
       return newFeedback;
     });
@@ -560,48 +560,48 @@ const Quiz = ({ isLoggedIn, onShowLoginModal }) => {
               <div style={{ padding: '16px 0' }}>
                 <Title level={4}>Question {index + 1}</Title>
                 <p>{question.question}</p>
-                <Radio.Group
-                  onChange={e => handleAnswerSelect(e.target.value)}
-                  value={selected}
-                  disabled={submitted}
-                  style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
-                >
+        <Radio.Group
+          onChange={e => handleAnswerSelect(e.target.value)}
+          value={selected}
+          disabled={submitted}
+          style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
+        >
                   {Array.isArray(question.options) ? (
                     question.options.map((opt, optIndex) => (
-                      <Radio
-                        key={opt}
+              <Radio
+                key={opt}
                         value={optIndex}
-                        disabled={submitted}
-                      >
-                        {opt}
-                      </Radio>
-                    ))
-                  ) : (
-                    <div style={{ color: 'red' }}>No options available for this question.</div>
-                  )}
-                </Radio.Group>
-                <div style={{ marginTop: 16 }}>
-                  {!submitted ? (
-                    <Button type="primary" onClick={handleSubmit} disabled={selected === null || submitting} loading={submitting}>
+                disabled={submitted}
+              >
+                {opt}
+              </Radio>
+            ))
+          ) : (
+            <div style={{ color: 'red' }}>No options available for this question.</div>
+          )}
+        </Radio.Group>
+        <div style={{ marginTop: 16 }}>
+          {!submitted ? (
+            <Button type="primary" onClick={handleSubmit} disabled={selected === null || submitting} loading={submitting}>
                       Submit Answer
-                    </Button>
-                  ) : (
-                    <>
+            </Button>
+          ) : (
+            <>
                       {feedback[index] && feedback[index].isCorrect ? (
                         <Alert message="Correct!" description={feedback[index].explanation} type="success" showIcon />
-                      ) : (
-                        <Alert 
-                          message={
-                            <>
-                              Incorrect answer.<br />
+              ) : (
+                <Alert 
+                  message={
+                    <>
+                      Incorrect answer.<br />
                               Correct answer: {feedback[index]?.correct || 'Not available'}
-                            </>
-                          }
+                    </>
+                  }
                           description={`You selected: ${feedback[index]?.selected || 'Not available'}`}
-                          type="error" 
-                          showIcon 
-                        />
-                      )}
+                  type="error" 
+                  showIcon 
+                />
+              )}
                       <div style={{ marginTop: 16 }}>
                         <Button 
                           onClick={handleNext} 
@@ -619,17 +619,17 @@ const Quiz = ({ isLoggedIn, onShowLoginModal }) => {
                             }}
                           >
                             Skip to Next
-                          </Button>
+              </Button>
                         )}
                       </div>
-                    </>
-                  )}
-                </div>
+            </>
+          )}
+        </div>
                 {submitted && index === questions.length - 1 && (
-                  <div style={{ marginTop: 24 }}>
-                    <Alert message={`Quiz Complete! Your score: ${score} / ${questions.length}`} type="info" showIcon />
-                  </div>
-                )}
+          <div style={{ marginTop: 24 }}>
+            <Alert message={`Quiz Complete! Your score: ${score} / ${questions.length}`} type="info" showIcon />
+          </div>
+        )}
               </div>
             )
           }))}

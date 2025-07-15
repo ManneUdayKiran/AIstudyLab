@@ -6,7 +6,7 @@ import SmartProgressTracker from './SmartProgressTracker';
 
 const { Title, Text } = Typography;
 
-const DashboardSidebar = ({ onWeeklyPlanClick }) => {
+const DashboardSidebar = ({ onWeeklyPlanClick, weeklyProgress = [], progressSummary = {} }) => {
   const navigate = useNavigate();
   const [progressModalOpen, setProgressModalOpen] = useState(false);
 
@@ -14,11 +14,20 @@ const DashboardSidebar = ({ onWeeklyPlanClick }) => {
     navigate('/books');
   };
 
+  // Calculate dynamic quick stats
+  const daysStudied = weeklyProgress.filter(day => day.progress > 0).length;
+  // Weekly goal: show highest progress achieved this week, or average progress
+  const weeklyGoal = weeklyProgress.length > 0
+    ? Math.round(
+        weeklyProgress.reduce((acc, day) => acc + (day.progress || 0), 0) / weeklyProgress.length
+      )
+    : 0;
+
   return (
     <div style={{ width: 280, padding: '0 16px' }}>
       <Card 
-        title={<span><CalendarOutlined /> Quick Actions</span>}
-        style={{ marginBottom: 16 }}
+        title={<span style={{color:'white'}}><CalendarOutlined /> Quick Actions</span>}
+        style={{ marginBottom: 16, background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', color: 'white', boxShadow: '0 2px 12px #0001' }}
       >
         <Space direction="vertical" style={{ width: '100%' }} size="middle">
           <Button
@@ -110,28 +119,31 @@ const DashboardSidebar = ({ onWeeklyPlanClick }) => {
           open={progressModalOpen}
           onCancel={() => setProgressModalOpen(false)}
           footer={null}
-          title="Progress Tracker"
+          title={<span style={{color:'black'}}>Progress Tracker</span>}
           width={700}
           centered
+          style={{ background: 'black', boxShadow: 'none', padding: 0 }}
         >
-          <SmartProgressTracker />
+          <div style={{ background: 'rgba(255,255,255,0.13)', backdropFilter: 'blur(16px)', color: 'white', borderRadius: 18, padding: 24 }}>
+            <SmartProgressTracker />
+          </div>
         </Modal>
       </Card>
 
-      <Card title="📊 Quick Stats" size="small">
+      <Card title="📊 Quick Stats" size="small" style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', color: 'white', boxShadow: '0 2px 12px #0001', border: 'none' }}>
         <div style={{ textAlign: 'center', padding: '16px 0' }}>
           <div style={{ fontSize: 24, fontWeight: 700, color: '#1890ff' }}>
-            7
+            {daysStudied}
           </div>
-          <div style={{ fontSize: 14, color: '#666' }}>
+          <div style={{ fontSize: 14, color: '#eee' }}>
             Days Studied
           </div>
         </div>
         <div style={{ textAlign: 'center', padding: '16px 0' }}>
           <div style={{ fontSize: 24, fontWeight: 700, color: '#52c41a' }}>
-            85%
+            {weeklyGoal}%
           </div>
-          <div style={{ fontSize: 14, color: '#666' }}>
+          <div style={{ fontSize: 14, color: '#eee' }}>
             Weekly Goal
           </div>
         </div>
