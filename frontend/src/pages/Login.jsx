@@ -11,12 +11,26 @@ const Login = ({ onLogin }) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('https://aistudylab.onrender.com/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      });
-      const data = await res.json();
+      // Add a timeout for the fetch request (10 seconds)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      let res, data;
+      try {
+        res = await fetch('https://aistudylab.onrender.com/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(values),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        data = await res.json();
+      } catch (fetchErr) {
+        if (fetchErr.name === 'AbortError') {
+          throw new Error('Server is taking too long to respond. If it failed to load, please try again.');
+        } else {
+          throw fetchErr;
+        }
+      }
       if (!res.ok) throw new Error(data.message || 'Login failed');
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
