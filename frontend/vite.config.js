@@ -6,5 +6,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: process.env.PORT || 5173,
+     allowedHosts: ['aistudylab-1.onrender.com','https://aistudylab.onrender.com'],
   },
 })
