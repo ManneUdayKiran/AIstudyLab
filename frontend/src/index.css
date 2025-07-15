@@ -52,7 +52,7 @@ html {
   background: url('https://www.transparenttextures.com/patterns/noise.png');
 }  */
 body{
-  background-image: url(image.png);
+  background-image: url(/image.png);
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
