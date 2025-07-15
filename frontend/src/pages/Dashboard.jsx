@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, Progress, message } from 'antd';
 import AnalyticsChart from '../components/AnalyticsChart';
 import SmartProgressTracker from '../components/SmartProgressTracker';
