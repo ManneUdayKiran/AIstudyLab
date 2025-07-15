@@ -18,6 +18,11 @@ const progressRouter = require('./routes/progress');
 
 var app = express();
 
+app.use(cors({
+  origin: 'https://a-istudy-lab.vercel.app', // or '*' for all origins (not recommended for production)
+  credentials: true // if you use cookies/auth
+}));
+
 app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.json());
