@@ -3,7 +3,7 @@ import { Table, Button, Modal, Form, Input, Space, Popconfirm, message, Tag, Car
 import { PlusOutlined, EditOutlined, DeleteOutlined, FileTextOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
-const apiUrl = 'http://localhost:3000/api/admin/questions';
+const apiUrl = 'https://a-istudy-lab.vercel.app/api/admin/questions';
 const defaultForm = { question: '', options: ['', '', '', ''], answer: '', explanation: '' };
 
 const AdminQuestions = () => {

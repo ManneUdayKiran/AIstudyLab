@@ -5,7 +5,7 @@ const axios = require('axios');
 
 const CSV_PATH = path.join(__dirname, 'sat_world_and_us_history.csv');
 const TEMP_JSON_PATH = path.join(__dirname, 'history_questions_temp.json');
-const IMPORT_ENDPOINT = 'http://localhost:3000/api/data/import-json';
+const IMPORT_ENDPOINT = 'https://a-istudy-lab.vercel.app/api/data/import-json';
 
 function shuffleArray(array) {
   // Fisher-Yates shuffle

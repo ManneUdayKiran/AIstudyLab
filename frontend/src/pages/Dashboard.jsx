@@ -93,7 +93,7 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
     setOnboardingLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3000/api/auth/profile', {
+      const response = await fetch('https://a-istudy-lab.vercel.app/api/auth/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
       if (!token) return;
 
       // Fetch weekly progress
-      const weeklyResponse = await fetch('http://localhost:3000/api/progress/weekly', {
+      const weeklyResponse = await fetch('https://a-istudy-lab.vercel.app/api/progress/weekly', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -145,7 +145,7 @@ const Dashboard = ({ user, progress = 0, onUserUpdate }) => {
       }
 
       // Fetch progress summary
-      const summaryResponse = await fetch('http://localhost:3000/api/progress/summary', {
+      const summaryResponse = await fetch('https://a-istudy-lab.vercel.app/api/progress/summary', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

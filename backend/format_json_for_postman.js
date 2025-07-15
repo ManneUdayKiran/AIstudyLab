@@ -20,4 +20,4 @@ console.log('📁 File: computer_science_qa_postman.json');
 console.log('📊 Questions: ' + originalData.length);
 console.log('');
 console.log('📋 Copy the content of computer_science_qa_postman.json to Postman body');
-console.log('🔗 Endpoint: POST http://localhost:3000/api/data/questions/json'); 
+console.log('🔗 Endpoint: POST https://a-istudy-lab.vercel.app/api/data/questions/json'); 

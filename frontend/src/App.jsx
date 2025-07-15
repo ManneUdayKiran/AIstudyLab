@@ -104,7 +104,7 @@ function App() {
         }
       }
       
-      const response = await fetch('http://localhost:3000/api/auth/profile', {
+      const response = await fetch('https://a-istudy-lab.vercel.app/api/auth/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -275,7 +275,7 @@ function LearningPage({ isLoggedIn, onShowLoginModal }) {
   React.useEffect(() => {
     const fetchCS = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/data/learning');
+        const res = await fetch('https://a-istudy-lab.vercel.app/api/data/learning');
         const json = await res.json();
         setCSData(json.data || []);
       } catch {
@@ -284,7 +284,7 @@ function LearningPage({ isLoggedIn, onShowLoginModal }) {
     };
     const fetchMaths = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/data/maths-learning');
+        const res = await fetch('https://a-istudy-lab.vercel.app/api/data/maths-learning');
         const json = await res.json();
         setMathsData(json.data || []);
       } catch {
@@ -293,7 +293,7 @@ function LearningPage({ isLoggedIn, onShowLoginModal }) {
     };
     const fetchDS = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/data/datascience-learning');
+        const res = await fetch('https://a-istudy-lab.vercel.app/api/data/datascience-learning');
         const json = await res.json();
         setDSData(json.data || []);
       } catch {
@@ -302,7 +302,7 @@ function LearningPage({ isLoggedIn, onShowLoginModal }) {
     };
     const fetchScience = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/data/science-learning');
+        const res = await fetch('https://a-istudy-lab.vercel.app/api/data/science-learning');
         const json = await res.json();
         setScienceData(json.data || []);
       } catch {

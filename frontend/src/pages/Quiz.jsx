@@ -48,7 +48,7 @@ const Quiz = ({ isLoggedIn, onShowLoginModal }) => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch('http://localhost:3000/api/admin/questions');
+        const res = await fetch('https://a-istudy-lab.vercel.app/api/admin/questions');
         const data = await res.json();
         const uniqueSubjects = [...new Set((data.questions || []).map(q => q.subject))];
         setSubjects(uniqueSubjects);
@@ -70,7 +70,7 @@ const Quiz = ({ isLoggedIn, onShowLoginModal }) => {
       try {
         let data;
         if (selectedSubject.toLowerCase() === 'maths') {
-          const res = await fetch('http://localhost:3000/api/data/math-questions?category=general&limit=100');
+          const res = await fetch('https://a-istudy-lab.vercel.app/api/data/math-questions?category=general&limit=100');
           data = await res.json();
           // Transform math questions to match quiz format
           data.questions = data.questions.map(q => ({
@@ -80,7 +80,7 @@ const Quiz = ({ isLoggedIn, onShowLoginModal }) => {
             options: q.options ? q.options.split(',').map(opt => opt.trim()) : []
           }));
         } else if (selectedSubject.toLowerCase() === 'science') {
-          const res = await fetch('http://localhost:3000/api/data/math-questions?category=science&limit=100');
+          const res = await fetch('https://a-istudy-lab.vercel.app/api/data/math-questions?category=science&limit=100');
           data = await res.json();
           // Transform science questions: strip labels, shuffle answer texts, and set correct letter
           data.questions = data.questions.map(q => {
@@ -108,7 +108,7 @@ const Quiz = ({ isLoggedIn, onShowLoginModal }) => {
             };
           });
         } else if (selectedSubject.toLowerCase() === 'history') {
-          const res = await fetch('http://localhost:3000/api/data/math-questions?category=history&limit=100');
+          const res = await fetch('https://a-istudy-lab.vercel.app/api/data/math-questions?category=history&limit=100');
           data = await res.json();
           // Transform history questions: parse options, find correct letter, and display
           data.questions = data.questions.map(q => {
@@ -138,7 +138,7 @@ const Quiz = ({ isLoggedIn, onShowLoginModal }) => {
           });
         } else if (selectedSubject.toLowerCase() === 'computer science') {
           // Fetch Computer Science questions from the new API endpoint
-          const res = await fetch(`http://localhost:3000/api/quiz?subject=Computer Science&limit=100`);
+          const res = await fetch(`https://a-istudy-lab.vercel.app/api/quiz?subject=Computer Science&limit=100`);
           data = await res.json();
           // Transform Computer Science questions to match quiz format
           data.questions = data.questions.map(q => ({
@@ -149,7 +149,7 @@ const Quiz = ({ isLoggedIn, onShowLoginModal }) => {
             explanation: q.explanation || '',
           }));
         } else {
-          const res = await fetch(`http://localhost:3000/api/quiz?subject=${encodeURIComponent(selectedSubject)}`);
+          const res = await fetch(`https://a-istudy-lab.vercel.app/api/quiz?subject=${encodeURIComponent(selectedSubject)}`);
           data = await res.json();
         }
         setQuestions(data.questions);

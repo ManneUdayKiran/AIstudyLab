@@ -12,7 +12,7 @@ const Books = () => {
 
   const fetchBooks = (pageNum = 1) => {
     setLoading(true);
-    fetch(`http://localhost:3000/api/dataImport/books?page=${pageNum}&limit=${PAGE_SIZE}`)
+    fetch(`https://a-istudy-lab.vercel.app/api/dataImport/books?page=${pageNum}&limit=${PAGE_SIZE}`)
       .then(res => res.json())
       .then(data => {
         setBooks(data.books);
