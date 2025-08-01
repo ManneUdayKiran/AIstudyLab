@@ -12,7 +12,7 @@ const Register = ({ onRegister }) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('https://a-istudy-lab-of1b.vercel.app/api/auth/register', {
+      const res = await fetch('https://aistudylab.onrender.com/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
